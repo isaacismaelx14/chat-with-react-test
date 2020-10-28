@@ -8,8 +8,22 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 io.on("connection", (socket) => {
-  socket.on("connected", () => {
-    console.log("user connected");
+  socket.on("connected", (name) => {
+    io.emit("connectedUser", {
+      server: "server",
+      message: `${name} is connected`,
+    });
+  });
+
+  socket.on("message", (name, message) => {
+    io.emit("messages", { name, message });
+  });
+
+  socket.on("disconnected", (name) => {
+    io.emit("messages", {
+      server: "server",
+      message: `${name} has left the chat`,
+    });
   });
 });
 

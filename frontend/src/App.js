@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Chat from "./components/Chat";
 
 function App() {
+  const [name, setName] = useState("");
+  const [registed, setRegisted] = useState(false);
+
+  const register = (e) => {
+    e.preventDefault();
+    if (name !== "") {
+      setRegisted(true);
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {!registed ? (
+        <form onSubmit={register}>
+          <label htmlFor="Name">Insert Your Name</label>
+          <input
+            type="text"
+            name="name"
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+          />
+          <button>Go to chat</button>
+        </form>
+      ) : (
+        <Chat name={name} />
+      )}
     </div>
   );
 }
